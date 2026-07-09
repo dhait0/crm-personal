@@ -4,8 +4,9 @@ Base inicial para un CRM personal orientado a propuestas y oportunidades de proy
 
 ## Stack
 
-- React + TypeScript + Vite
-- Supabase para persistencia e ingesta automatica
+- Next.js Pages Router
+- PostgreSQL + Prisma ORM
+- API Routes para login y oportunidades
 - Sentry para observabilidad
 
 ## Variables de entorno
@@ -13,12 +14,13 @@ Base inicial para un CRM personal orientado a propuestas y oportunidades de proy
 Duplica `.env.example` a `.env` y define:
 
 ```bash
-VITE_SUPABASE_URL=...
-VITE_SUPABASE_ANON_KEY=...
-VITE_SENTRY_DSN=...
+NEXT_PUBLIC_SENTRY_DSN=...
+AUTH_SECRET=...
+DATABASE_URL=postgresql://crm_user:crm_password@localhost:5432/crm_personal?schema=public
+INTAKE_TOKEN=...
+ADMIN_EMAIL=...
+ADMIN_PASSWORD=...
 ```
-
-Sin variables de Supabase, la app funciona en modo demo con `localStorage`.
 
 ## Comandos
 
@@ -26,11 +28,14 @@ Sin variables de Supabase, la app funciona en modo demo con `localStorage`.
 npm install
 npm run dev
 npm run build
+npx prisma generate
+npx prisma migrate dev
+npm run user:seed -- --email tu@email.com --password "tu-password"
 ```
 
 ## Docker Compose
 
-El frontend puede correr en contenedor sin incluir el backend:
+El stack local corre con PostgreSQL y una sola app Next:
 
 ```bash
 docker compose up --build
@@ -44,11 +49,32 @@ docker compose watch
 
 `src/` y archivos de configuracion se sincronizan al contenedor. Cambios en `package.json` o `package-lock.json` disparan rebuild.
 
-## Supabase
+## Prisma y PostgreSQL
 
-1. Ejecuta la migracion en `supabase/migrations/001_init.sql`.
-2. Despliega `supabase/functions/intake-opportunity`.
-3. Configura el secreto `INTAKE_TOKEN`.
+1. Levanta PostgreSQL.
+2. Ejecuta `npx prisma generate`.
+3. Ejecuta `npx prisma migrate dev`.
+4. Crea tu usuario inicial con `npm run user:seed`.
+5. Inicia la app con `npm run dev`.
+
+El esquema vive en [prisma/schema.prisma](/Users/keys/Documents/crm_personal/prisma/schema.prisma).
+
+## Login
+
+- `GET /login`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `GET /api/auth/me`
+- `GET /dashboard` protegido por sesion en cookie
+
+La sesion usa `AUTH_SECRET` y cookie `httpOnly`.
+
+## API REST
+
+- `GET /api/health`
+- `GET /api/opportunities`
+- `POST /api/opportunities`
+- `POST /api/intake/opportunities` con header `x-intake-token`
 
 ## Gmail personal
 
@@ -57,6 +83,8 @@ Conectar directamente el inbox principal no es la mejor primera version. La opci
 1. Crear un label dedicado en Gmail.
 2. Filtrar correos de oportunidades o propuestas.
 3. Reenviarlos a Google Apps Script, Zapier o n8n.
-4. Publicar en `intake-opportunity` con `x-intake-token`.
+4. Publicar en `/api/intake/opportunities` con `x-intake-token`.
 
 Eso reduce ruido, evita parsear todo el correo personal y mantiene el backend simple.
+
+Hay un ejemplo listo en [gmail-apps-script.js](/Users/keys/Documents/crm_personal/docs/gmail-apps-script.js).

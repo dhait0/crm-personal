@@ -19,13 +19,18 @@
 
 html,
 body,
-#root {
+#__next {
   margin: 0;
   min-height: 100%;
 }
 
 body {
   min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 button,
@@ -43,6 +48,16 @@ button {
   width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
   padding: 40px 0 56px;
+}
+
+.session-bar {
+  width: min(1200px, calc(100% - 32px));
+  margin: 24px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: rgba(247, 237, 225, 0.82);
 }
 
 .hero-section,
@@ -225,6 +240,18 @@ button {
   box-shadow: 0 18px 30px rgba(255, 123, 47, 0.25);
 }
 
+.ghost-button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff7f1;
+}
+
 .primary-button:disabled {
   opacity: 0.7;
   cursor: progress;
@@ -326,12 +353,83 @@ button {
   border: 1px solid rgba(255, 174, 145, 0.22);
 }
 
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.auth-panel {
+  width: min(960px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
+  gap: 20px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  box-shadow: 0 22px 45px rgba(4, 13, 16, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.auth-copy h1 {
+  margin: 0 0 12px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.05;
+  max-width: 12ch;
+}
+
+.auth-copy p:last-child {
+  max-width: 44ch;
+  color: rgba(247, 237, 225, 0.82);
+}
+
+.auth-form {
+  padding: 22px;
+  border-radius: 8px;
+  background: rgba(4, 15, 18, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-form label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.input-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(6, 18, 21, 0.34);
+}
+
+.input-with-icon svg {
+  color: rgba(247, 237, 225, 0.66);
+  flex: 0 0 auto;
+}
+
+.input-with-icon input {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  color: #fff5ea;
+  outline: none;
+}
+
 @media (max-width: 1080px) {
   .stats-grid,
   .automation-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .auth-panel,
   .content-grid,
   .hero-section {
     grid-template-columns: 1fr;
@@ -342,6 +440,13 @@ button {
   .app-shell {
     width: min(100% - 20px, 1200px);
     padding: 20px 0 36px;
+  }
+
+  .session-bar {
+    width: min(100% - 20px, 1200px);
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .stats-grid,

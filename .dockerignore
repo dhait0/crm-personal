@@ -1,6 +1,8 @@
 node_modules
 dist
+.next
 .git
 .env
 supabase/.temp
 *.tsbuildinfo
+build-server

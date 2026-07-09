@@ -1,25 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { sampleOpportunities } from "../data/sampleOpportunities";
-import { isSupabaseConfigured, supabase } from "../lib/supabase";
+import { createOpportunity as createOpportunityRequest, fetchOpportunities } from "../lib/api";
 import type { Opportunity, OpportunityInput } from "../types";
 
 const STORAGE_KEY = "crm-personal-opportunities";
-
-function mapRow(row: Record<string, unknown>): Opportunity {
-  return {
-    id: String(row.id),
-    projectDescription: String(row.project_description ?? ""),
-    proposalSent: String(row.proposal_sent ?? ""),
-    proposalSummary: String(row.proposal_summary ?? ""),
-    responded: Boolean(row.responded),
-    interview: Boolean(row.interview),
-    status: String(row.status ?? "propuesta") as Opportunity["status"],
-    won: Boolean(row.won),
-    lossReason: row.loss_reason ? String(row.loss_reason) : null,
-    source: String(row.source ?? "manual"),
-    createdAt: String(row.created_at ?? new Date().toISOString())
-  };
-}
 
 function loadLocal(): Opportunity[] {
   const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -44,26 +28,16 @@ export function useOpportunities() {
     setLoading(true);
     setError(null);
 
-    if (!isSupabaseConfigured || !supabase) {
+    try {
+      const data = await fetchOpportunities();
+      setItems(data);
+    } catch (requestError) {
+      const message = requestError instanceof Error ? requestError.message : "Error al cargar datos.";
+      setError(message);
       setItems(loadLocal());
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const { data, error: queryError } = await supabase
-      .from("opportunities")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (queryError) {
-      setError(queryError.message);
-      setItems([]);
-      setLoading(false);
-      return;
-    }
-
-    setItems((data ?? []).map((row) => mapRow(row)));
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -73,7 +47,11 @@ export function useOpportunities() {
   const createOpportunity = useCallback(async (input: OpportunityInput) => {
     setError(null);
 
-    if (!isSupabaseConfigured || !supabase) {
+    try {
+      await createOpportunityRequest(input);
+    } catch (requestError) {
+      const message = requestError instanceof Error ? requestError.message : "Error al guardar datos.";
+      setError(message);
       const nextItem: Opportunity = {
         id: crypto.randomUUID(),
         projectDescription: input.projectDescription,
@@ -94,23 +72,6 @@ export function useOpportunities() {
       return;
     }
 
-    const { error: insertError } = await supabase.from("opportunities").insert({
-      project_description: input.projectDescription,
-      proposal_sent: input.proposalSent,
-      proposal_summary: input.proposalSummary,
-      responded: input.responded,
-      interview: input.interview,
-      status: input.status,
-      won: input.won,
-      loss_reason: input.lossReason || null,
-      source: input.source
-    });
-
-    if (insertError) {
-      setError(insertError.message);
-      throw insertError;
-    }
-
     await refresh();
   }, [refresh]);
 
@@ -129,7 +90,7 @@ export function useOpportunities() {
     loading,
     error,
     stats,
-    isDemoMode: !isSupabaseConfigured,
+    isDemoMode: Boolean(error),
     refresh,
     createOpportunity
   };

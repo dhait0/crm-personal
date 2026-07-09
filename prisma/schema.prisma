@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OpportunityStatus {
+  propuesta
+  respondio
+  entrevista
+  ganada
+  perdida
+}
+
+model Opportunity {
+  id                 String            @id @default(uuid())
+  projectDescription String            @map("project_description")
+  proposalSummary    String            @map("proposal_summary")
+  proposalSent       DateTime          @map("proposal_sent")
+  responded          Boolean           @default(false)
+  interview          Boolean           @default(false)
+  won                Boolean           @default(false)
+  status             OpportunityStatus @default(propuesta)
+  lossReason         String?           @map("loss_reason")
+  source             String            @default("manual")
+  metadata           Json              @default("{}")
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+
+  @@map("opportunities")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}

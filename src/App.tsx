@@ -13,7 +13,7 @@ const automationIdeas = [
   {
     icon: <DatabaseZap size={18} />,
     title: "Ingreso automatico",
-    description: "Supabase Edge Function recibe oportunidades desde formularios, Apps Script, Zapier o n8n con un token secreto."
+    description: "La API REST recibe oportunidades desde formularios, Apps Script, Zapier o n8n usando un token secreto."
   },
   {
     icon: <BellRing size={18} />,
@@ -22,7 +22,7 @@ const automationIdeas = [
   }
 ];
 
-export default function App() {
+export function AppShell() {
   const { items, loading, error, stats, isDemoMode, createOpportunity } = useOpportunities();
 
   return (
@@ -40,7 +40,7 @@ export default function App() {
         <div className="hero-summary">
           <div className="summary-row">
             <Telescope size={18} />
-            <span>{isDemoMode ? "Modo demo local activo" : "Conectado a Supabase"}</span>
+            <span>{isDemoMode ? "Modo demo local activo" : "Conectado a PostgreSQL por API REST"}</span>
           </div>
           <div className="summary-row">
             <Mail size={18} />
@@ -76,3 +76,5 @@ export default function App() {
     </main>
   );
 }
+
+export default AppShell;

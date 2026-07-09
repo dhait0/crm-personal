@@ -1,37 +1,48 @@
 services:
-  frontend:
+  postgres:
+    image: postgres:16-alpine
+    container_name: crm-personal-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crm_personal
+      POSTGRES_USER: crm_user
+      POSTGRES_PASSWORD: crm_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: crm-personal-frontend
+    container_name: crm-personal-app
+    depends_on:
+      - postgres
     ports:
-      - "4173:4173"
+      - "3000:3000"
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgresql://crm_user:crm_password@postgres:5432/crm_personal?schema=public
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev -- --host 0.0.0.0
+    command: sh -c "npx prisma generate && npm run dev -- --hostname 0.0.0.0"
     develop:
       watch:
+        - action: sync
+          path: ./pages
+          target: /app/pages
         - action: sync
           path: ./src
           target: /app/src
         - action: sync
-          path: ./index.html
-          target: /app/index.html
+          path: ./prisma
+          target: /app/prisma
         - action: sync
-          path: ./vite.config.ts
-          target: /app/vite.config.ts
-        - action: sync
-          path: ./tsconfig.json
-          target: /app/tsconfig.json
-        - action: sync
-          path: ./tsconfig.app.json
-          target: /app/tsconfig.app.json
-        - action: sync
-          path: ./tsconfig.node.json
-          target: /app/tsconfig.node.json
+          path: ./scripts
+          target: /app/scripts
         - action: sync
           path: ./.env
           target: /app/.env
@@ -39,3 +50,11 @@ services:
           path: ./package.json
         - action: rebuild
           path: ./package-lock.json
+        - action: rebuild
+          path: ./next.config.ts
+        - action: sync
+          path: ./tsconfig.json
+          target: /app/tsconfig.json
+
+volumes:
+  postgres-data:
