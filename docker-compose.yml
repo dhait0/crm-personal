@@ -1,0 +1,41 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crm-personal-frontend
+    ports:
+      - "4173:4173"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+        - action: sync
+          path: ./index.html
+          target: /app/index.html
+        - action: sync
+          path: ./vite.config.ts
+          target: /app/vite.config.ts
+        - action: sync
+          path: ./tsconfig.json
+          target: /app/tsconfig.json
+        - action: sync
+          path: ./tsconfig.app.json
+          target: /app/tsconfig.app.json
+        - action: sync
+          path: ./tsconfig.node.json
+          target: /app/tsconfig.node.json
+        - action: sync
+          path: ./.env
+          target: /app/.env
+        - action: rebuild
+          path: ./package.json
+        - action: rebuild
+          path: ./package-lock.json

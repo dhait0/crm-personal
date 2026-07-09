@@ -1,0 +1,364 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #f7ede1;
+  background:
+    radial-gradient(circle at top left, rgba(255, 146, 43, 0.35), transparent 30%),
+    radial-gradient(circle at top right, rgba(255, 214, 171, 0.18), transparent 26%),
+    linear-gradient(160deg, #0f272c 0%, #15363d 52%, #1e474f 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0 56px;
+}
+
+.hero-section,
+.glass-panel,
+.automation-item,
+.stat-card {
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  box-shadow: 0 22px 45px rgba(4, 13, 16, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.hero-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+  gap: 24px;
+  padding: 28px;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  line-height: 1.05;
+  max-width: 12ch;
+}
+
+.hero-text {
+  max-width: 62ch;
+  color: rgba(247, 237, 225, 0.84);
+  margin: 16px 0 0;
+}
+
+.hero-summary {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.summary-row,
+.status-chip,
+.source-chip,
+.automation-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.summary-row {
+  min-height: 56px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: rgba(10, 24, 28, 0.26);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  font-size: 0.76rem;
+  color: #ffb367;
+}
+
+.stats-grid,
+.content-grid,
+.automation-grid,
+.form-grid,
+.check-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.stats-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 20px 0;
+}
+
+.stat-card {
+  min-height: 132px;
+  padding: 18px;
+}
+
+.stat-label,
+.stat-hint,
+.opportunity-meta dt,
+.source-chip {
+  color: rgba(247, 237, 225, 0.72);
+}
+
+.stat-value {
+  display: block;
+  font-size: 2rem;
+  margin: 8px 0 4px;
+}
+
+.content-grid {
+  grid-template-columns: minmax(320px, 0.92fr) minmax(0, 1.35fr);
+  align-items: start;
+}
+
+.glass-panel {
+  padding: 22px;
+}
+
+.panel-header {
+  margin-bottom: 18px;
+}
+
+.panel-header h2,
+.automation-item h2,
+.opportunity-title h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.crm-form label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.crm-form span {
+  color: rgba(247, 237, 225, 0.9);
+  font-size: 0.95rem;
+}
+
+.crm-form input,
+.crm-form textarea,
+.crm-form select {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(6, 18, 21, 0.34);
+  color: #fff5ea;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.crm-form input:focus,
+.crm-form textarea:focus,
+.crm-form select:focus {
+  border-color: rgba(255, 160, 84, 0.85);
+  box-shadow: 0 0 0 3px rgba(255, 157, 82, 0.18);
+}
+
+.form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.check-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 14px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(6, 18, 21, 0.24);
+}
+
+.checkbox input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #ff8f35;
+}
+
+.primary-button {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff7f1;
+  background: linear-gradient(135deg, #ff8c3a 0%, #ff6b2f 100%);
+  box-shadow: 0 18px 30px rgba(255, 123, 47, 0.25);
+}
+
+.primary-button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.board-panel {
+  min-height: 100%;
+}
+
+.opportunity-list {
+  display: grid;
+  gap: 14px;
+}
+
+.opportunity-item {
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(4, 15, 18, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.opportunity-top,
+.opportunity-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.status-chip,
+.source-chip {
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.88rem;
+}
+
+.opportunity-body {
+  margin: 14px 0;
+}
+
+.opportunity-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.opportunity-body p,
+.automation-item p,
+.loss-reason,
+.empty-state,
+.error-banner {
+  margin: 0;
+  color: rgba(247, 237, 225, 0.8);
+}
+
+.opportunity-meta {
+  align-items: flex-start;
+}
+
+.opportunity-meta div {
+  min-width: 100px;
+}
+
+.opportunity-meta dd {
+  margin: 4px 0 0;
+}
+
+.loss-reason {
+  margin-top: 12px;
+  color: #ffd0a0;
+}
+
+.automation-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 20px;
+}
+
+.automation-item {
+  padding: 18px;
+}
+
+.automation-icon {
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 146, 43, 0.16);
+  color: #ffb367;
+  margin-bottom: 12px;
+}
+
+.error-banner {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: rgba(117, 27, 12, 0.5);
+  border: 1px solid rgba(255, 174, 145, 0.22);
+}
+
+@media (max-width: 1080px) {
+  .stats-grid,
+  .automation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .content-grid,
+  .hero-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    width: min(100% - 20px, 1200px);
+    padding: 20px 0 36px;
+  }
+
+  .stats-grid,
+  .automation-grid,
+  .form-grid,
+  .check-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section,
+  .glass-panel,
+  .automation-item,
+  .stat-card {
+    padding: 18px;
+  }
+
+  .hero-copy h1 {
+    font-size: 2rem;
+  }
+}
